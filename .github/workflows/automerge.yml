@@ -1,0 +1,35 @@
+name: Auto Merge
+
+on:
+  pull_request:
+    types:
+      - labeled
+      - opened
+      - synchronize
+
+jobs:
+  auto-merge:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check code
+        uses: actions/checkout@v3
+    
+      - name: Check for automerge label
+        id: check-label
+        run: |
+          labels=$(echo '${{ toJSON(github.event.pull_request.labels) }}')
+          if echo "$labels" | grep -q '"name":"automerge"'; then
+            echo "Automerge label found"
+            echo "::set-output name=automerge::true"
+          else
+            echo "Automerge label not found"
+            echo "::set-output name=automerge::false"
+          fi
+
+      - name: Auto-merge if label exists and checks pass
+        if: steps.check-label.outputs.automerge == 'true'
+        run: |
+          gh pr merge ${{ github.event.pull_request.number }} --merge --admin
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
