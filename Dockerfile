@@ -1,4 +1,9 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0
 
 WORKDIR /app
-RUN dotnet new console
+
+# Copy files into /app directory
+COPY . /app
+
+# Run application - app.csproj
+CMD ["dotnet", "/app/app.csproj"]
