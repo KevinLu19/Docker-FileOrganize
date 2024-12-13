@@ -1,9 +1,23 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0
+# Build Portion
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
 WORKDIR /app
 
-# Copy files into /app directory
-COPY . /app
+# Copy the .csproj file and restore dependencies
+COPY FileOrganizer.csproj ./
+RUN dotnet restore
 
-# Run application - app.csproj
-CMD ["dotnet", "/app/app.csproj"]
+COPY . .
+
+# Publish the app
+RUN dotnet publish -c Release -o out
+
+# Runtime Portion
+FROM mcr.microsoft.com/dotnet/runtime:8.0
+WORKDIR /app
+
+# Copy the published files from the build stage
+COPY --from=build /app/out .
+
+# Set the entry point to the compiled .dll file
+ENTRYPOINT [ "dotnet", "FileOrganizer.dll" ]

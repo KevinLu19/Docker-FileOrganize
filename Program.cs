@@ -1,15 +1,11 @@
 ﻿using System;
-using System.IO;
 
-using src.Categories;
-
+namespace FileOrganizer;
 
 public class Program
 {
     public static void Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
-        // FileOrganizers file_organizer = new FileOrganizers();
-
+        Console.WriteLine("Hello World!");
     }
 }
