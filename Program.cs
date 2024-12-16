@@ -7,8 +7,6 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        Console.WriteLine("Hello World!");
-
         FileOrganizers file_organ_obj = new FileOrganizers();
     }
 }

@@ -5,6 +5,9 @@ WORKDIR /app
 
 # Copy the .csproj file and restore dependencies
 COPY FileOrganizer.csproj ./
+
+# Copy the test_folder into docker's directory
+COPY test_folder/ ./test_folder/
 RUN dotnet restore
 
 COPY . .
