@@ -1,12 +1,12 @@
 using System;
 using System.IO;
 
-namespace src.Categories;
+namespace FileOrganizer.src.Categories;
 
 public class FileOrganizers
 {
     // Test directory (parent directory)
-    private string _test_dir_path = "/home/kevin/test";
+    private string _test_dir_path = "/home/kevin/test/";
     public FileOrganizers()
     {
         try
