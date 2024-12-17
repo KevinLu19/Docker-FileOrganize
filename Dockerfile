@@ -1,26 +1,20 @@
 # Build Portion
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build-env
 
 WORKDIR /app
 
-# Copy the .csproj file and restore dependencies
-COPY FileOrganizer.csproj ./
+# Copies everything from host -> docker directory.
+COPY . ./
 
-# Copy the test_folder into docker's directory
-COPY test_folder/ ./test_folder/
 RUN dotnet restore
 
-COPY . .
-
-# Publish the app
+# Build and publish a release
 RUN dotnet publish -c Release -o out
 
-# Runtime Portion
-FROM mcr.microsoft.com/dotnet/runtime:8.0
+# Build runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:9.0
 WORKDIR /app
 
-# Copy the published files from the build stage
-COPY --from=build /app/out .
+COPY --from=build-env /app/out .
 
-# Set the entry point to the compiled .dll file
-ENTRYPOINT [ "dotnet", "FileOrganizer.dll" ]
+ENTRYPOINT ["dotnet", "FileOrganizer.dll"]

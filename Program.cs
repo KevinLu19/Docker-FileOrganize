@@ -7,6 +7,7 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        FileOrganizers file_organ_obj = new FileOrganizers();
+        FileOrganizers file_obj = new FileOrganizers();
+        file_obj.GetAllFiles();
     }
 }
