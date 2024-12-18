@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace FileOrganizer.src.Categories;
 
@@ -30,5 +31,13 @@ public class FileOrganizers
         {
             Console.WriteLine(item);
         }
+    }
+
+    // First off, sort all files that have the same file extension together as the start.
+    public void FilterByFileExtension()
+    {
+        string reg_expression_pattern = @"\.([a-zA-Z0-9]*)$";
+
+
     }
 }
