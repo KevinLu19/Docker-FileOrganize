@@ -9,5 +9,6 @@ public class Program
     {
         FileOrganizers file_obj = new FileOrganizers();
         file_obj.GetAllFiles();
+        file_obj.FilterByFileExtension();
     }
 }
