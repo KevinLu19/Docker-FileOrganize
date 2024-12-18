@@ -57,11 +57,7 @@ public class FileOrganizers
             foreach (Match matches in match)
             {
                 // Check if key already exist in hashmap
-                if (file_hash_map.ContainsKey(matches.Value))
-                {
-                    Console.WriteLine("Key already exists in the hash map: " + matches.Value);
-                }
-                else
+                if (!file_hash_map.ContainsKey(matches.Value))
                 {
                     file_hash_map.Add(matches.Value, hash_map_count);
                     hash_map_count++;
@@ -69,9 +65,9 @@ public class FileOrganizers
             }
         }
 
-        foreach(var item in file_hash_map)
-        {
-            Console.WriteLine(item.Key);
-        }
+        // foreach(var item in file_hash_map)
+        // {
+        //     Console.WriteLine(item.Key);
+        // }
     }
 }
