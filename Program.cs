@@ -10,5 +10,7 @@ public class Program
         // Currently set to get all files in current directory in the docker container.
         file_obj.GetAllFiles();
         file_obj.FilterByFileExtension();
+
+        file_obj.SortFiles();
     }
 }

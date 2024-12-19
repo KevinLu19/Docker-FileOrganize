@@ -4,7 +4,7 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build-env
 WORKDIR /app
 
 # Copies everything from host -> docker directory.
-COPY . ./
+COPY . .
 
 RUN dotnet restore
 

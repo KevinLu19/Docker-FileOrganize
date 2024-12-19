@@ -28,7 +28,8 @@ public class FileOrganizers
             _file_list.Add(file.Name);
         }
 
-        // Testing what files is on the current directory. Need to move this to unit testing.
+        // // Testing what files is on the current directory. Need to move this to unit testing.
+        // // Returns the <name of the file>.<file extension>
         // foreach(var item in _file_list)
         // {
         //     Console.WriteLine(item);
@@ -87,6 +88,6 @@ public class FileOrganizers
     {
         ImageExtension image_ext = new ImageExtension(_file_list);
 
-        image_ext.Sort();
+        image_ext.CreateImgDirectory();
     }
 }
