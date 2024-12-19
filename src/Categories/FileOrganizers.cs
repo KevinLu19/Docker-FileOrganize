@@ -1,6 +1,5 @@
-using System;
-using System.IO;
 using System.Text.RegularExpressions;
+using FileOrganizer.src.Categories.Interfaces;
 
 namespace FileOrganizer.src.Categories;
 
@@ -29,7 +28,8 @@ public class FileOrganizers
             _file_list.Add(file.Name);
         }
 
-        // Testing what files is on the current directory. Need to move this to unit testing.
+        // // Testing what files is on the current directory. Need to move this to unit testing.
+        // // Returns the <name of the file>.<file extension>
         // foreach(var item in _file_list)
         // {
         //     Console.WriteLine(item);
@@ -48,6 +48,7 @@ public class FileOrganizers
         int hash_map_count = 1;
 
         // Reg Ex the list of file names.
+        // Primes the hash map.
         foreach (var item in _file_list)
         {
             MatchCollection match = regex.Matches(item);
@@ -69,5 +70,24 @@ public class FileOrganizers
         // {
         //     Console.WriteLine(item.Key);
         // }
+    }
+
+    /*
+        Problem: Hard/ force sorting for the user. For initial start.
+        Images:
+            - PNG, JPEG, GIF, SVG, JPG
+        Documents:
+            - PDF, Doc, Docx, TXT, CSV, ODT
+        Programming:
+            - CS, PY, CPP, JS, C, JAR, JAVA, Sh, H
+        Web Related:
+            - JSON, XML, HTTP
+        
+    */
+    public void SortFiles()
+    {
+        ImageExtension image_ext = new ImageExtension(_file_list);
+
+        image_ext.CreateImgDirectory();
     }
 }
