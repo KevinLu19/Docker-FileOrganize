@@ -9,7 +9,11 @@ public class FileOrganizers
     private List<string> _file_list = new List<string>();
 
     // Create different lists with each type as the sorted folders. Need a generic list type.
-    
+    private IList<IFileExtension> _image_collection = new List<IFileExtension>(); 
+
+    // Hash map for file extensions. Not storing the name of the file. Will be <file ext, number>
+    private Dictionary<string, int> _file_hash_map = new Dictionary<string, int>();
+
     public FileOrganizers()
     {
         // Current directory is whatever docker's directorypath is. 
@@ -46,8 +50,7 @@ public class FileOrganizers
         string reg_expression_pattern = @"\.([a-zA-Z0-9]*)$";
         Regex regex = new Regex(reg_expression_pattern);
 
-        // Hash map for file extensions. Not storing the name of the file. Will be <file ext, number>
-        Dictionary<string, int> file_hash_map = new Dictionary<string, int>();
+        
         int hash_map_count = 1;
 
         // Reg Ex the list of file names.
@@ -61,9 +64,9 @@ public class FileOrganizers
             foreach (Match matches in match)
             {
                 // Check if key already exist in hashmap
-                if (!file_hash_map.ContainsKey(matches.Value))
+                if (!_file_hash_map.ContainsKey(matches.Value))
                 {
-                    file_hash_map.Add(matches.Value, hash_map_count);
+                    _file_hash_map.Add(matches.Value, hash_map_count);
                     hash_map_count++;
                 }
             }
@@ -75,6 +78,10 @@ public class FileOrganizers
         // }
     }
 
+    public void FilterHashMap()
+    {
+        // Create a dictionary of enums to solve the below comment
+    }
     /*
         Problem: Hard/ force sorting for the user. For initial start.
         Images:
@@ -85,10 +92,10 @@ public class FileOrganizers
             - CS, PY, CPP, JS, C, JAR, JAVA, Sh, H
         Web Related:
             - JSON, XML, HTTP
-        
     */
     public void SortFiles()
     {
+        // Sort via Images and put in image folder.
         ImageExtension image_ext = new ImageExtension(_file_list);
 
         image_ext.CreateImgDirectory();
