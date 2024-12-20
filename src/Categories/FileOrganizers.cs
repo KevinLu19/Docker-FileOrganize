@@ -7,6 +7,9 @@ public class FileOrganizers
 {
     // This list just stores the name of the files. Not the file itself. Will need to manipulate it later on.
     private List<string> _file_list = new List<string>();
+
+    // Create different lists with each type as the sorted folders. Need a generic list type.
+    
     public FileOrganizers()
     {
         // Current directory is whatever docker's directorypath is. 
