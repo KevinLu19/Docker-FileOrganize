@@ -9,9 +9,9 @@ public class ImageExtension : IFileExtension
     
     private const string IMAGE_PATH = "/app/img";
 
-    public ImageExtension(List<string> file_list)
+    public ImageExtension()
     {
-        _list_of_files = file_list;
+        
     }
     
     public void Sort()
@@ -32,9 +32,9 @@ public class ImageExtension : IFileExtension
         }
     }
 
-    public void CreateImgDirectory()
+    public void CreateDirectory()
     {
-        var current_dir = Directory.GetCurrentDirectory();
+        // var current_dir = Directory.GetCurrentDirectory();
         var path = "/app/img";
 
         if (!Directory.Exists(path))
@@ -47,4 +47,5 @@ public class ImageExtension : IFileExtension
             Console.WriteLine("Path already exists");
         }
     }
+
 }
