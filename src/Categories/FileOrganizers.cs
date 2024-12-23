@@ -1,5 +1,8 @@
 using System.Text.RegularExpressions;
 using FileOrganizer.src.Categories.Interfaces;
+using System.IO;
+
+using FileOrganizer.src.Categories.Enumerate;
 
 namespace FileOrganizer.src.Categories;
 
@@ -8,16 +11,20 @@ public class FileOrganizers
     // This list just stores the name of the files. Not the file itself. Will need to manipulate it later on.
     private List<string> _file_list = new List<string>();
 
-    // Create different lists with each type as the sorted folders. Need a generic list type.
-    private IList<IFileExtension> _image_collection = new List<IFileExtension>(); 
-
-    // Hash map for file extensions. Not storing the name of the file. Will be <file ext, number>
-    private Dictionary<string, int> _file_hash_map = new Dictionary<string, int>();
+    private const string DOCKER_PARENT_PATH = "/app";
 
     public FileOrganizers()
     {
         // Current directory is whatever docker's directorypath is. 
         //Console.WriteLine("Current directory path: " + Directory.GetCurrentDirectory());
+    }
+    
+    private Dictionary<string, int> GetItemInDictionary()
+    {
+        // Hash map for file extensions. Not storing the name of the file. Will be <file ext, number>
+        Dictionary<string, int> file_hash_map = new Dictionary<string, int>();
+
+        return file_hash_map;
     }
 
     // Lists all files in current directory.
@@ -50,6 +57,7 @@ public class FileOrganizers
         string reg_expression_pattern = @"\.([a-zA-Z0-9]*)$";
         Regex regex = new Regex(reg_expression_pattern);
 
+        var dict_items = GetItemInDictionary();
         
         int hash_map_count = 1;
 
@@ -64,9 +72,9 @@ public class FileOrganizers
             foreach (Match matches in match)
             {
                 // Check if key already exist in hashmap
-                if (!_file_hash_map.ContainsKey(matches.Value))
+                if (!dict_items.ContainsKey(matches.Value))
                 {
-                    _file_hash_map.Add(matches.Value, hash_map_count);
+                    dict_items.Add(matches.Value, hash_map_count);
                     hash_map_count++;
                 }
             }
@@ -77,27 +85,101 @@ public class FileOrganizers
         //     Console.WriteLine(item.Key);
         // }
     }
-
-    public void FilterHashMap()
+    
+    
+    // Creates the directories based on the extensions in the hash map.
+    public void CreateDirFromHashMap()
     {
         // Create a dictionary of enums to solve the below comment
+        ImageExtension img_ext = new ImageExtension();
+        WebExtension web_ext = new WebExtension();
+
+        var dict_items = GetItemInDictionary();
+
+        // Creates all of the file directories with no prompt. All directories are based on the stored hash file ext.
+        foreach (var item in dict_items) 
+        {
+            if (item.Key == ImageEnum.GIF.ToString() || item.Key == ImageEnum.PNG.ToString() || item.Key == ImageEnum.JPEG.ToString() || item.Key == ImageEnum.JPG.ToString() || item.Key == ImageEnum.SVG.ToString())
+            {
+                img_ext.CreateDirectory();
+            }
+            else if (item.Key == WebEnum.HTML.ToString() || item.Key == WebEnum.JSON.ToString() || item.Key == WebEnum.XML.ToString())
+            {
+                web_ext.CreateDirectory();
+            }
+        }
     }
+
     /*
         Problem: Hard/ force sorting for the user. For initial start.
-        Images:
+        Images: Ext- /img
             - PNG, JPEG, GIF, SVG, JPG
-        Documents:
+        Documents: Ext- /document
             - PDF, Doc, Docx, TXT, CSV, ODT
-        Programming:
-            - CS, PY, CPP, JS, C, JAR, JAVA, Sh, H
-        Web Related:
+        Programming: Ext- /programming
+            - CS, PY, CPP, JS, C, JAR, JAVA, SH, H
+        Web Related: Ext- /html
             - JSON, XML, HTTP
     */
     public void SortFiles()
     {
         // Sort via Images and put in image folder.
-        ImageExtension image_ext = new ImageExtension(_file_list);
+        ImageExtension image_ext = new ImageExtension();
+        WebExtension web_ext = new WebExtension();
 
-        image_ext.CreateImgDirectory();
+        string destination_path = null;
+
+        // Loop through the file name on the file extension
+        foreach (var item in _file_list)
+        {
+            // Move each filename based on the file extension of each of the file.
+            CreateDirFromHashMap();
+
+            // Move the file to proper directory based on extension.
+            if (item.EndsWith("PNG", StringComparison.OrdinalIgnoreCase) ||
+            item.EndsWith("JPEG", StringComparison.OrdinalIgnoreCase) ||
+            item.EndsWith("GIF", StringComparison.OrdinalIgnoreCase) ||
+            item.EndsWith("JPG", StringComparison.OrdinalIgnoreCase) ||
+            item.EndsWith("SVG", StringComparison.OrdinalIgnoreCase))
+            {
+                destination_path = Path.Combine(DOCKER_PARENT_PATH, "img");
+            }
+            else if (item.EndsWith("JSON", StringComparison.OrdinalIgnoreCase) ||
+                 item.EndsWith("XML", StringComparison.OrdinalIgnoreCase) ||
+                 item.EndsWith("HTTP", StringComparison.OrdinalIgnoreCase))
+            {
+                destination_path = Path.Combine(DOCKER_PARENT_PATH, "html");
+            }
+
+            if (destination_path != null)
+            {
+                MovingFiles(destination_path);
+            }
+        }
+
+    }
+
+    public void MovingFiles(string destination_path)
+    {
+        // Example destination path.
+        // destination_path = Path.Combine("/app", "/img");
+
+        foreach (var item in _file_list)
+        {
+            string file_name = Path.GetFileName(item);
+
+            string new_file_path = Path.Combine(destination_path, file_name);
+
+            try
+            {
+                // Move file
+                File.Move(item, new_file_path);
+                Console.WriteLine($"Moved {file_name} to {new_file_path}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to move {file_name}: {ex.Message}");
+            }            
+        }
     }
 }
