@@ -105,13 +105,13 @@ public class FileOrganizers
             item.Key.Equals(ImageEnum.JPG.ToString(), StringComparison.OrdinalIgnoreCase) ||
             item.Key.Equals(ImageEnum.SVG.ToString(), StringComparison.OrdinalIgnoreCase))
             {
-                img_ext.CreateDirectory();
+                img_ext.CreateDirectory(DOCKER_PARENT_PATH);
             }
             else if (item.Key.Equals(WebEnum.HTML.ToString(), StringComparison.OrdinalIgnoreCase) ||
             item.Key.Equals(WebEnum.JSON.ToString(), StringComparison.OrdinalIgnoreCase) || 
             item.Key.Equals(WebEnum.XML.ToString(), StringComparison.OrdinalIgnoreCase))
             {
-                web_ext.CreateDirectory();
+                web_ext.CreateDirectory(DOCKER_PARENT_PATH);
             }
         }
     }
@@ -129,10 +129,6 @@ public class FileOrganizers
     */
     public void SortFiles()
     {
-        // Sort via Images and put in image folder.
-        ImageExtension image_ext = new ImageExtension();
-        WebExtension web_ext = new WebExtension();
-
         string destination_path = null;
 
         // Loop through the file name on the file extension
