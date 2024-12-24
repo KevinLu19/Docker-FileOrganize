@@ -99,11 +99,17 @@ public class FileOrganizers
         // Creates all of the file directories with no prompt. All directories are based on the stored hash file ext.
         foreach (var item in dict_items) 
         {
-            if (item.Key == ImageEnum.GIF.ToString() || item.Key == ImageEnum.PNG.ToString() || item.Key == ImageEnum.JPEG.ToString() || item.Key == ImageEnum.JPG.ToString() || item.Key == ImageEnum.SVG.ToString())
+            if (item.Key.Equals(ImageEnum.GIF.ToString(), StringComparison.OrdinalIgnoreCase) ||
+            item.Key.Equals(ImageEnum.PNG.ToString(), StringComparison.OrdinalIgnoreCase) || 
+            item.Key.Equals(ImageEnum.JPEG.ToString(), StringComparison.OrdinalIgnoreCase) ||
+            item.Key.Equals(ImageEnum.JPG.ToString(), StringComparison.OrdinalIgnoreCase) ||
+            item.Key.Equals(ImageEnum.SVG.ToString(), StringComparison.OrdinalIgnoreCase))
             {
                 img_ext.CreateDirectory();
             }
-            else if (item.Key == WebEnum.HTML.ToString() || item.Key == WebEnum.JSON.ToString() || item.Key == WebEnum.XML.ToString())
+            else if (item.Key.Equals(WebEnum.HTML.ToString(), StringComparison.OrdinalIgnoreCase) ||
+            item.Key.Equals(WebEnum.JSON.ToString(), StringComparison.OrdinalIgnoreCase) || 
+            item.Key.Equals(WebEnum.XML.ToString(), StringComparison.OrdinalIgnoreCase))
             {
                 web_ext.CreateDirectory();
             }
@@ -149,6 +155,10 @@ public class FileOrganizers
                  item.EndsWith("HTTP", StringComparison.OrdinalIgnoreCase))
             {
                 destination_path = Path.Combine(DOCKER_PARENT_PATH, "html");
+            }
+            else
+            {
+                Console.WriteLine($"{item} does not fit into any of the filtered extenstions.");
             }
 
             if (destination_path != null)
