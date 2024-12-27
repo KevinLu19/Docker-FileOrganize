@@ -4,6 +4,6 @@ namespace FileOrganizer.src.Categories.Interfaces;
 public interface IFileExtension
 {
     void Sort();
-    void CreateDirectory();
+    void CreateDirectory(string project_parent_dir);
 }
 

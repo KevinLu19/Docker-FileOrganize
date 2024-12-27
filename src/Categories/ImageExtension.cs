@@ -32,10 +32,10 @@ public class ImageExtension : IFileExtension
         }
     }
 
-    public void CreateDirectory()
+    public void CreateDirectory(string project_parent_dir)
     {
         // var current_dir = Directory.GetCurrentDirectory();
-        var path = "/app/img";
+        var path = Path.Combine(project_parent_dir, "img");
 
         if (!Directory.Exists(path))
         {

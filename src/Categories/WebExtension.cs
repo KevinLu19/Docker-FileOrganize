@@ -13,10 +13,10 @@ public class WebExtension : IFileExtension
 
     }
 
-    public void CreateDirectory()
+    public void CreateDirectory(string project_parent_dir)
     {
         // var current_dir = Directory.GetCurrentDirectory();
-        var path = "/app/html";
+        var path = Path.Combine(project_parent_dir, "html");
 
         if (!Directory.Exists(path))
         {
