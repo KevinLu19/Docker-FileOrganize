@@ -124,6 +124,8 @@ public class FileOrganizers
             {
                 Console.WriteLine($"Moving {item} to {destination_path}");
                 MovingFiles(destination_path);
+
+                PrintItemInDirectory(destination_path);     // Check items inside of the destination.
             }
             else
             {
@@ -152,16 +154,23 @@ public class FileOrganizers
 
             try
             {
-                // Move file
-                File.Move(item, new_file_path);
-                Console.WriteLine($"Moved {file_name} to {new_file_path}");
+                // Validate if file exists. Hopefully this removes error even if file has moved.
+                if (File.Exists(item))
+                {
+                    // Move file
+                    File.Move(item, new_file_path);
+                    Console.WriteLine($"Moved {file_name} to {new_file_path}");
+                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Failed to move {file_name}: {ex:Message}");
             }
         }
+    }
 
+    public void PrintItemInDirectory(string destination_path)
+    {
         // Print out the entire files in the directory.
         foreach (var item in Directory.GetFiles(destination_path))
         {
