@@ -99,7 +99,7 @@ public class FileOrganizers
     */
     public void SortFiles()
     {
-        string destination_path = null;
+        string? destination_path = null;
 
         // Loop through the file name on the file extension
         foreach (var item in _file_list)
