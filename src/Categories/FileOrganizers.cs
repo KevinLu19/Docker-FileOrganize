@@ -86,36 +86,6 @@ public class FileOrganizers
         // }
     }
     
-    
-    // Creates the directories based on the extensions in the hash map.
-    public void CreateDirFromHashMap()
-    {
-        // Create a dictionary of enums to solve the below comment
-        ImageExtension img_ext = new ImageExtension();
-        WebExtension web_ext = new WebExtension();
-
-        var dict_items = GetItemInDictionary();
-
-        // Creates all of the file directories with no prompt. All directories are based on the stored hash file ext.
-        foreach (var item in dict_items) 
-        {
-            if (item.Key.Equals(ImageEnum.GIF.ToString(), StringComparison.OrdinalIgnoreCase) ||
-            item.Key.Equals(ImageEnum.PNG.ToString(), StringComparison.OrdinalIgnoreCase) || 
-            item.Key.Equals(ImageEnum.JPEG.ToString(), StringComparison.OrdinalIgnoreCase) ||
-            item.Key.Equals(ImageEnum.JPG.ToString(), StringComparison.OrdinalIgnoreCase) ||
-            item.Key.Equals(ImageEnum.SVG.ToString(), StringComparison.OrdinalIgnoreCase))
-            {
-                img_ext.CreateDirectory(DOCKER_PARENT_PATH);
-            }
-            else if (item.Key.Equals(WebEnum.HTML.ToString(), StringComparison.OrdinalIgnoreCase) ||
-            item.Key.Equals(WebEnum.JSON.ToString(), StringComparison.OrdinalIgnoreCase) || 
-            item.Key.Equals(WebEnum.XML.ToString(), StringComparison.OrdinalIgnoreCase))
-            {
-                web_ext.CreateDirectory(DOCKER_PARENT_PATH);
-            }
-        }
-    }
-
     /*
         Problem: Hard/ force sorting for the user. For initial start.
         Images: Ext- /img
@@ -134,9 +104,6 @@ public class FileOrganizers
         // Loop through the file name on the file extension
         foreach (var item in _file_list)
         {
-            // Move each filename based on the file extension of each of the file.
-            CreateDirFromHashMap();
-
             // Move the file to proper directory based on extension.
             if (item.EndsWith("PNG", StringComparison.OrdinalIgnoreCase) ||
             item.EndsWith("JPEG", StringComparison.OrdinalIgnoreCase) ||
@@ -152,14 +119,15 @@ public class FileOrganizers
             {
                 destination_path = Path.Combine(DOCKER_PARENT_PATH, "html");
             }
+           
+            if (destination_path != null)
+            {
+                Console.WriteLine($"Moving {item} to {destination_path}");
+                MovingFiles(destination_path);
+            }
             else
             {
                 Console.WriteLine($"{item} does not fit into any of the filtered extenstions.");
-            }
-
-            if (destination_path != null)
-            {
-                MovingFiles(destination_path);
             }
         }
 
@@ -170,10 +138,16 @@ public class FileOrganizers
         // Example destination path.
         // destination_path = Path.Combine("/app", "/img");
 
+        // Creating directory if it doesn't exist.
+        if (!Directory.Exists(destination_path))
+        {
+            Console.WriteLine($"Creating directory: {destination_path}");
+            Directory.CreateDirectory(destination_path);
+        }
+
         foreach (var item in _file_list)
         {
             string file_name = Path.GetFileName(item);
-
             string new_file_path = Path.Combine(destination_path, file_name);
 
             try
@@ -184,8 +158,14 @@ public class FileOrganizers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Failed to move {file_name}: {ex.Message}");
-            }            
+                Console.WriteLine($"Failed to move {file_name}: {ex:Message}");
+            }
+        }
+
+        // Print out the entire files in the directory.
+        foreach (var item in Directory.GetFiles(destination_path))
+        {
+            Console.WriteLine(item);  // Full path
         }
     }
 }
