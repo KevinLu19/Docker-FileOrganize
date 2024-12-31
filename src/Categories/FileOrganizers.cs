@@ -1,8 +1,5 @@
 using System.Text.RegularExpressions;
-using FileOrganizer.src.Categories.Interfaces;
 using System.IO;
-
-using FileOrganizer.src.Categories.Enumerate;
 
 namespace FileOrganizer.src.Categories;
 
@@ -119,7 +116,28 @@ public class FileOrganizers
             {
                 destination_path = Path.Combine(DOCKER_PARENT_PATH, "html");
             }
-           
+            else if (item.EndsWith("PDF", StringComparison.OrdinalIgnoreCase) ||
+                    item.EndsWith("DOC", StringComparison.OrdinalIgnoreCase)  || 
+                    item.EndsWith("DOCX", StringComparison.OrdinalIgnoreCase) ||
+                    item.EndsWith("TXT", StringComparison.OrdinalIgnoreCase)  ||
+                    item.EndsWith("CSV", StringComparison.OrdinalIgnoreCase)  ||
+                    item.EndsWith("ODT", StringComparison.OrdinalIgnoreCase))
+            {
+                destination_path = Path.Combine(DOCKER_PARENT_PATH, "documents");
+            }
+            else if (item.EndsWith("CS", StringComparison.OrdinalIgnoreCase) ||
+                    item.EndsWith("PY", StringComparison.OrdinalIgnoreCase) ||
+                    item.EndsWith("CPP", StringComparison.OrdinalIgnoreCase) ||
+                    item.EndsWith("JS", StringComparison.OrdinalIgnoreCase) ||
+                    item.EndsWith("C", StringComparison.OrdinalIgnoreCase) ||
+                    item.EndsWith("JAR", StringComparison.OrdinalIgnoreCase) ||
+                    item.EndsWith("JAVA", StringComparison.OrdinalIgnoreCase) ||
+                    item.EndsWith("SH", StringComparison.OrdinalIgnoreCase) ||
+                    item.EndsWith("H", StringComparison.OrdinalIgnoreCase))
+            {
+                destination_path = Path.Combine(DOCKER_PARENT_PATH, "programming");
+            }
+
             if (destination_path != null)
             {
                 Console.WriteLine($"Moving {item} to {destination_path}");
