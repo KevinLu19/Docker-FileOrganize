@@ -8,14 +8,8 @@ public class FileOrganizers
     // This list just stores the name of the files. Not the file itself. Will need to manipulate it later on.
     private List<string> _file_list = new List<string>();
 
-    private const string DOCKER_PARENT_PATH = "/app";
+    private const string DOCKER_PARENT_PATH = "/app/test_folder";
 
-    public FileOrganizers()
-    {
-        // Current directory is whatever docker's directorypath is. 
-        //Console.WriteLine("Current directory path: " + Directory.GetCurrentDirectory());
-    }
-    
     private Dictionary<string, int> GetItemInDictionary()
     {
         // Hash map for file extensions. Not storing the name of the file. Will be <file ext, number>
@@ -28,9 +22,9 @@ public class FileOrganizers
     public void GetAllFiles()
     {
         var current_dir = Directory.GetCurrentDirectory();
-        Console.WriteLine("The current directory is: " + current_dir);
+        Console.WriteLine("The current directory is: " + DOCKER_PARENT_PATH);
 
-        DirectoryInfo dir = new DirectoryInfo(current_dir);
+        DirectoryInfo dir = new DirectoryInfo(DOCKER_PARENT_PATH);
 
         FileInfo[] files = dir.GetFiles();
         
