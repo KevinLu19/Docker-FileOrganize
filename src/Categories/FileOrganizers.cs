@@ -158,7 +158,6 @@ public class FileOrganizers
 
                 PrintItemInDirectory(destination_path);     // Check items inside of the destination.
             }
-            
         }
     }
 
