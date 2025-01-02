@@ -21,7 +21,6 @@ public class FileOrganizers
     // Lists all files in current directory.
     public void GetAllFiles()
     {
-        var current_dir = Directory.GetCurrentDirectory();
         Console.WriteLine("The current directory is: " + DOCKER_PARENT_PATH);
 
         DirectoryInfo dir = new DirectoryInfo(DOCKER_PARENT_PATH);
@@ -87,6 +86,8 @@ public class FileOrganizers
             - CS, PY, CPP, JS, C, JAR, JAVA, SH, H
         Web Related: Ext- /html
             - JSON, XML, HTTP
+        Music Related:
+         
     */
     public void SortFiles()
     {
@@ -131,20 +132,34 @@ public class FileOrganizers
             {
                 destination_path = Path.Combine(DOCKER_PARENT_PATH, "programming");
             }
-
-            if (destination_path != null)
+            else if (item.EndsWith("MP3", StringComparison.OrdinalIgnoreCase) ||
+                    item.EndsWith("WAV", StringComparison.OrdinalIgnoreCase))
             {
-                Console.WriteLine($"Moving {item} to {destination_path}");
-                MovingFiles(destination_path);
-
-                PrintItemInDirectory(destination_path);     // Check items inside of the destination.
+                destination_path = Path.Combine(DOCKER_PARENT_PATH, "audio");
+            }
+            else if (item.EndsWith("MP4", StringComparison.OrdinalIgnoreCase) ||
+                    item.EndsWith("AVI", StringComparison.OrdinalIgnoreCase) ||
+                    item.EndsWith("MOV", StringComparison.OrdinalIgnoreCase) || 
+                    item.EndsWith("WebM", StringComparison.OrdinalIgnoreCase) ||
+                    item.EndsWith("MKV", StringComparison.OrdinalIgnoreCase))
+            {
+                destination_path = Path.Combine(DOCKER_PARENT_PATH, "video");
             }
             else
             {
+                destination_path = null;
                 Console.WriteLine($"{item} does not fit into any of the filtered extenstions.");
             }
-        }
 
+            if (destination_path != null)
+            {
+                MovingFiles(destination_path);
+                Console.WriteLine($"Moving {item} to {destination_path}");
+
+                PrintItemInDirectory(destination_path);     // Check items inside of the destination.
+            }
+            
+        }
     }
 
     public void MovingFiles(string destination_path)
