@@ -32,13 +32,15 @@ public class FileOrganizers
             _file_list.Add(file.Name);
         }
 
-        // // Testing what files is on the current directory. Need to move this to unit testing.
-        // // Returns the <name of the file>.<file extension>
-        // foreach(var item in _file_list)
-        // {
-        //     Console.WriteLine(item);
-        // }
-        // Console.WriteLine("-------------------");
+        /*
+            // Testing what files is on the current directory. Need to move this to unit testing.
+            // Returns the <name of the file>.<file extension>
+            foreach(var item in _file_list)
+            {
+                Console.WriteLine(item);
+            }
+            Console.WriteLine("-------------------");
+        */
     }
 
     // First off, sort all files that have the same file extension together as the start.
@@ -172,6 +174,8 @@ public class FileOrganizers
             Console.WriteLine($"Creating directory: {destination_path}");
             Directory.CreateDirectory(destination_path);
         }
+        
+        DuplicationFileChk dup_check = new DuplicationFileChk();
 
         foreach (var item in _file_list)
         {
@@ -183,9 +187,17 @@ public class FileOrganizers
                 // Validate if file exists. Hopefully this removes error even if file has moved.
                 if (File.Exists(item))
                 {
-                    // Move file
-                    File.Move(item, new_file_path);
-                    Console.WriteLine($"Moved {file_name} to {new_file_path}");
+                    // Check for duplicate files before moving the file to destination.
+                    if (dup_check.ChkDuplicationFiles(item, new_file_path))
+                    {
+                        // Move file
+                        File.Move(item, new_file_path);
+                        Console.WriteLine($"Moved {file_name} to {new_file_path}");
+                    }
+                    else            
+                    {
+                        Console.WriteLine($"Duplicate files were found. Halting moving {item} to {new_file_path}");
+                    }
                 }
             }
             catch (Exception ex)
