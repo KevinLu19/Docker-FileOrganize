@@ -4,18 +4,7 @@ namespace FileOrganizer.src.Categories;
 
 public class FileCompress
 {
-    private readonly string _compress_file_name;
-
-    // ZipFile usages.
-    private string _zip_path;
-    private string _extract_path;           // Destination for the ziped file.
-    private string _start_path;
-
-    public FileCompress(string file_name)
-    {
-        _compress_file_name = file_name;
-    }
-    
+    // Compresses and returns .zip archives.
     public void ZipDirectory(string path)
     {
         /*
@@ -42,7 +31,10 @@ public class FileCompress
 
             // Check if parent dir exists (it shoudl exist)
             if (parent_dir != null)
+            {
                 ZipFile.CreateFromDirectory(path, parent_dir);
+                Console.WriteLine($"Created zip to path of: {parent_dir}");
+            }
             
         }
         else
@@ -50,17 +42,30 @@ public class FileCompress
             Console.WriteLine($"{path} does not exist or cannot open. Take a look into that.");
         }
     }
-
-    public void CompressFile(string file_name)
+    
+    // Unzips .zip
+    public void DecompressFile(string destination_path, string zip_file)
     {
-        if (string.IsNullOrEmpty(file_name))
+        // check if extracting path given exists. If not, create one.
+        if (!Directory.Exists (destination_path))
         {
-            
+            Console.WriteLine($"Creating {destination_path}");
+
+            Directory.CreateDirectory(destination_path);
         }
-    }
+        else
+        {
+            // Try and decompress given archive.
+            try
+            {
+                ZipFile.ExtractToDirectory(zip_file, destination_path);
 
-    public void DecompressFile()
-    {
-
+                Console.WriteLine($"{zip_file} sucessfully extracted to {destination_path}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Decompressing error: {ex.Message}");
+            }
+        }
     }
 }
