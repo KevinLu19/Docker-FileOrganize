@@ -194,7 +194,7 @@ public class FileOrganizers
                         File.Move(item, new_file_path);
                         Console.WriteLine($"Moved {file_name} to {new_file_path}");
                     }
-                    else            
+                    else
                     {
                         Console.WriteLine($"Duplicate files were found. Halting moving {item} to {new_file_path}");
                     }
