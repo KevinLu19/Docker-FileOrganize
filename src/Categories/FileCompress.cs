@@ -1,8 +1,9 @@
 using System.IO.Compression;
+using FileOrganizer.src.Categories.Interfaces;
 
 namespace FileOrganizer.src.Categories;
 
-public class FileCompress
+public class FileCompress : IFile
 {
     // Compresses and returns .zip archives.
     public void ZipDirectory(string path)
@@ -67,5 +68,25 @@ public class FileCompress
                 Console.WriteLine($"Decompressing error: {ex.Message}");
             }
         }
+    }
+
+    // Taken from IFile interface
+    public List<string> GetFileInDirectory(string path)
+    {
+        DirectoryInfo dir = new DirectoryInfo(path);
+        FileInfo[] files = dir.GetFiles();
+
+        List<string> file_name = new List<string>();
+
+
+        if (Directory.Exists (path))
+        {
+            foreach (var item in files)
+            {
+                file_name.Add(item.FullName);
+            }
+        }
+
+        return file_name; 
     }
 }
