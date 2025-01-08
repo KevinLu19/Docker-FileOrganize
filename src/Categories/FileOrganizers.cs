@@ -9,6 +9,7 @@ public class FileOrganizers
     private List<string> _file_list = new List<string>();
 
     private const string DOCKER_PARENT_PATH = "/app/test_folder";
+    private FileCompress _file_compress = new FileCompress();        // Testing out compressing functions.
 
     private Dictionary<string, int> GetItemInDictionary()
     {
@@ -158,7 +159,7 @@ public class FileOrganizers
                 MovingFiles(destination_path);
                 Console.WriteLine($"Moving {item} to {destination_path}");
 
-                PrintItemInDirectory(destination_path);     // Check items inside of the destination.
+                // PrintItemInDirectory(destination_path);     // Check items inside of the destination.
             }
         }
     }
@@ -171,8 +172,10 @@ public class FileOrganizers
         // Creating directory if it doesn't exist.
         if (!Directory.Exists(destination_path))
         {
+            Console.WriteLine("------------------");
             Console.WriteLine($"Creating directory: {destination_path}");
             Directory.CreateDirectory(destination_path);
+            Console.WriteLine("------------------");
         }
         
         DuplicationFileChk dup_check = new DuplicationFileChk();
