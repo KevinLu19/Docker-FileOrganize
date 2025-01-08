@@ -5,6 +5,9 @@ namespace FileOrganizer.src.Categories;
 
 public class FileCompress : IFile
 {
+    // Default path for storing any .zip file.
+    private const string _ARCHIVE_DIR = "/app/archive";
+
     // Compresses and returns .zip archives.
     public void ZipDirectory(string path)
     {
@@ -37,8 +40,8 @@ public class FileCompress : IFile
             if (archive_dir != null)
             {
                 Console.WriteLine("==============");
-                ZipFile.CreateFromDirectory(path, archive_dir);
-                Console.WriteLine($"Created zip to path of: {archive_dir}");
+                ZipFile.CreateFromDirectory(path, _ARCHIVE_DIR);
+                Console.WriteLine($"Created zip to path of: {_ARCHIVE_DIR}");
                 Console.WriteLine("==============");
             }
         }
@@ -48,29 +51,20 @@ public class FileCompress : IFile
         }
     }
     
-    // Unzips .zip
-    public void DecompressFile(string destination_path, string zip_file)
+    // Unzips .zip files.
+    public void DecompressFile(string zip_file_name)
     {
-        // check if extracting path given exists. If not, create one.
-        if (!Directory.Exists (destination_path))
+        // Try and decompress given archive and store it in the archive folder (/app/archive)
+        try
         {
-            Console.WriteLine($"Creating {destination_path}");
+            // Will create the directory if it doens't exist. If it exists, will proceed to extract.
+            ZipFile.ExtractToDirectory(zip_file_name, _ARCHIVE_DIR);
 
-            Directory.CreateDirectory(destination_path);
+            Console.WriteLine($"{zip_file_name} sucessfully extracted to {_ARCHIVE_DIR}");
         }
-        else
+        catch (Exception ex)
         {
-            // Try and decompress given archive.
-            try
-            {
-                ZipFile.ExtractToDirectory(zip_file, destination_path);
-
-                Console.WriteLine($"{zip_file} sucessfully extracted to {destination_path}");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Decompressing error: {ex.Message}");
-            }
+            Console.WriteLine($"Decompressing error: {ex.Message}");
         }
     }
 
