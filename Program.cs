@@ -12,5 +12,9 @@ public class Program
         file_obj.FilterByFileExtension();
 
         file_obj.SortFiles();
+
+        // Test for file compress
+        FileCompress file_compress = new FileCompress();
+        file_compress.ZipDirectory("/app/test_folder");
     }
 }

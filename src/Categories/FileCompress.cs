@@ -14,7 +14,7 @@ public class FileCompress : IFile
                 - This requires SharpZipLib.
         */
         
-        // Check if path exists
+        // Check if given path exists.
         if (Directory.Exists(path))
         {
             /*
@@ -22,21 +22,25 @@ public class FileCompress : IFile
                 Ex:
                 ~/file_org/src/test/path
 
+                ~/file_org/archive => Location for all archived files.
+
                 Compressed + zipped path = zip_path:
                 ~/file_org/src/test
 
                 extract_path: Create a new folder and insert files inside of that folder.
                 Check if folder content doesn't already exists.
             */
-            var parent_dir = Directory.GetParent(path)?.FullName;
+            var archive_dir = "/app/archive";
 
-            // Check if parent dir exists (it shoudl exist)
-            if (parent_dir != null)
+            // Check if archive dir exists (should not exist at first. Will need to transfer in a dir into docker)
+            // Create directory if it doesn't exist.
+            if (archive_dir != null)
             {
-                ZipFile.CreateFromDirectory(path, parent_dir);
-                Console.WriteLine($"Created zip to path of: {parent_dir}");
+                Console.WriteLine("==============");
+                ZipFile.CreateFromDirectory(path, archive_dir);
+                Console.WriteLine($"Created zip to path of: {archive_dir}");
+                Console.WriteLine("==============");
             }
-            
         }
         else
         {
