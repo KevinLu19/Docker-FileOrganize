@@ -49,6 +49,25 @@ public class FileCompress : IFile
         {
             Console.WriteLine($"{path} does not exist or cannot open. Take a look into that.");
         }
+
+        // Check if archive dir exists (it should be)
+        if (!Directory.Exists(_ARCHIVE_DIR))
+        {
+            Directory.CreateDirectory(_ARCHIVE_DIR);
+            Console.WriteLine($"{_ARCHIVE_DIR} does not exist. Check Dockerfile.");
+        }
+
+        string zip_file_name = $"{path}.zip";
+        // Combine path to ZIP file path to archive directory as that is the destination location.
+        string destination_zip_path = Path.Combine(_ARCHIVE_DIR, zip_file_name);
+
+        /*
+            Generate/ create ZIP file. 
+            Where to save the result .zip file (destination)
+            Create the ZIP file - store in destination_zip_path.
+        */
+        ZipFile.CreateFromDirectory(path, destination_zip_path);
+        Console.WriteLine($"Sucessfully zipped '{path}' to '{destination_zip_path}'");
     }
     
     // Unzips .zip files.
