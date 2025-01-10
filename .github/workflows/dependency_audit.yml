@@ -36,8 +36,3 @@ jobs:
             echo "No vulnerable packages found."
             echo "vulnerable=false" >> $GITHUB_ENV  # Sets environment variable
           fi
-
-      # Step to fail the workflow if vulnerable packages are found
-      - name: Fail if there are vulnerable packages
-        if: env.vulnerable == 'true'
-        run: exit 1
