@@ -1,0 +1,34 @@
+name: Dependency Audit
+
+on:
+  push:
+    branches:
+        - main
+
+jobs:
+  dependency-audit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check code
+        uses: actions/checkout@v3
+    
+        # Usage of dotnet list package --vulnerable
+      - name: Check dotnet for vulnerable packages.
+        id: check-dependencies
+        run: | 
+          dependencies=$(dotnet list package --vulnerable)
+          if [[ -n "$dependencies" ]]; then
+            echo "Vulnerable packages found."
+            echo "$dependencies"
+            echo "::set-output name=vulnerable::true"
+          else
+            echo "No vulnerable packages found."
+            echo "::set-output name=vulnerable::false"
+          fi
+
+    
+        # If there are any vulnerable packages present, need to fail. 
+      - name: Fail if there are vulnerable packages.
+        if: steps.check-dependencies.outputs.vulnerable == 'true'
+        run: exit 1     # Will fail this action.
