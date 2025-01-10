@@ -65,10 +65,18 @@ public class FileCompress : IFile
 
         if (Directory.Exists (path))
         {
+            Console.WriteLine($"GetFileDirectory - In path {path}.");
+            
             foreach (var item in files)
             {
                 file_name.Add(item.FullName);
             }
+        }
+
+        // Print item in list
+        foreach (var item in file_name)
+        {
+            System.Console.WriteLine(item);
         }
 
         return file_name; 
