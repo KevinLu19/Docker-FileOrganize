@@ -13,6 +13,10 @@ jobs:
       - name: Check code
         uses: actions/checkout@v3
     
+        # Run dotnet restore
+      - name: Restore dependencies
+        run: dotnet restore /home/runner/work/Docker-FileOrganize/Docker-FileOrganize/FileOrganizer.csproj
+
         # Usage of dotnet list package --vulnerable
       - name: Check dotnet for vulnerable packages.
         id: check-dependencies
@@ -26,7 +30,6 @@ jobs:
             echo "No vulnerable packages found."
             echo "vulnerable=false" >> $GITHUB_ENV  # Sets environment variable
           fi
-
     
         # If there are any vulnerable packages present, need to fail. 
       - name: Fail if there are vulnerable packages.
