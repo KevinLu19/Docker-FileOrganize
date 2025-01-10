@@ -21,14 +21,14 @@ jobs:
           if [[ -n "$dependencies" ]]; then
             echo "Vulnerable packages found."
             echo "$dependencies"
-            echo "::set-output name=vulnerable::true"
+            echo "vulnerable=true" >> $GITHUB_ENV   # Sets environment variable
           else
             echo "No vulnerable packages found."
-            echo "::set-output name=vulnerable::false"
+            echo "vulnerable=false" >> $GITHUB_ENV  # Sets environment variable
           fi
 
     
         # If there are any vulnerable packages present, need to fail. 
       - name: Fail if there are vulnerable packages.
-        if: steps.check-dependencies.outputs.vulnerable == 'true'
+        if: env.vulnerable == 'true'
         run: exit 1     # Will fail this action.
