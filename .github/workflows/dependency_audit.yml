@@ -13,6 +13,14 @@ jobs:
       - name: Check code
         uses: actions/checkout@v3
     
+       # Step to install .NET 9.0 SDK
+      - name: Install .NET 9.0 SDK
+        run: |
+          wget https://download.visualstudio.microsoft.com/download/pr/5d57bc9b-d8d2-49a9-bb29-8fdd63160f7d/d56d7427b7ec15c342fbc2f536ac063f/dotnet-sdk-9.0.100-preview.1.23127.6-linux-x64.tar.gz
+          mkdir -p $HOME/dotnet
+          tar zxf dotnet-sdk-9.0.100-preview.1.23127.6-linux-x64.tar.gz -C $HOME/dotnet
+          echo "$HOME/dotnet" >> $GITHUB_PATH
+         
         # Run dotnet restore
       - name: Restore dependencies
         run: dotnet restore /home/runner/work/Docker-FileOrganize/Docker-FileOrganize/FileOrganizer.csproj
