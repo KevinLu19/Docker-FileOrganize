@@ -38,6 +38,7 @@ public class FileCompress : IFile
     }
     
     // Unzip given .zip file.
+    // Formula for .zip file is: /app/archive/<path>.zip
     public void DecompressFile(string zip_file_name)
     {
         // Check if archive dir exists (it should be)
