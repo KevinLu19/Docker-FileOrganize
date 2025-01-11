@@ -15,6 +15,8 @@ public class Program
 
         // Test for file compress
         FileCompress file_compress = new FileCompress();
-        file_compress.ZipDirectory("/app/test_folder");
+        file_compress.ZipDirectory("/app/test_folder");         // Zips directory to /app/archive dir
+        file_compress.DecompressFile("/app/test_folder.zip");   // Unzips given .zip file.
+        file_compress.GetFileInDirectory("/app/archive");       // Prints everything in path
     }
 }
