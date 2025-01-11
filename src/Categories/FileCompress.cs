@@ -21,7 +21,7 @@ public class FileCompress : IFile
         if (!Directory.Exists(_ARCHIVE_DIR))
         {
             Directory.CreateDirectory(_ARCHIVE_DIR);
-            Console.WriteLine($"{_ARCHIVE_DIR} does not exist. Check Dockerfile.");
+            Console.WriteLine($"{_ARCHIVE_DIR} does not exist and is going to create the directory. Check Dockerfile.");
         }
 
         string zip_file_name = $"{path}.zip";
@@ -37,20 +37,25 @@ public class FileCompress : IFile
         Console.WriteLine($"Sucessfully zipped '{path}' to '{destination_zip_path}'");
     }
     
-    // Unzips .zip files.
+    // Unzip given .zip file.
     public void DecompressFile(string zip_file_name)
     {
+        // Check if archive dir exists (it should be)
+        if (!Directory.Exists(_ARCHIVE_DIR))
+        {
+            Directory.CreateDirectory(_ARCHIVE_DIR);
+            Console.WriteLine($"{_ARCHIVE_DIR} does not exist and is going to create the directory. Check Dockerfile. ");
+        }
+
         // Try and decompress given archive and store it in the archive folder (/app/archive)
         try
         {
-            // Will create the directory if it doens't exist. If it exists, will proceed to extract.
             ZipFile.ExtractToDirectory(zip_file_name, _ARCHIVE_DIR);
-
             Console.WriteLine($"{zip_file_name} sucessfully extracted to {_ARCHIVE_DIR}");
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            Console.WriteLine($"Decompressing error: {ex.Message}");
+            Console.WriteLine($"Something went wrong with unzipping: {e.Message}");
         }
     }
 
