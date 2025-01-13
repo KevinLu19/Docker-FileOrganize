@@ -1,4 +1,7 @@
 ﻿using FileOrganizer.src.Categories;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace FileOrganizer;
 
@@ -6,6 +9,9 @@ public class Program
 {
     public static void Main(string[] args)
     {
+        // ASP.Net for azure cloud
+        var builder = WebApplication.CreateBuilder(args);
+
         FileOrganizers file_obj = new FileOrganizers();
         // Currently set to get all files in current directory in the docker container.
         file_obj.GetAllFiles();
