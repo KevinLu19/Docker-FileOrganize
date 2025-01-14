@@ -1,10 +1,12 @@
 # A Test Dockerfile to test integration to Azure
+# sdk for building the application
 FROM mrc.microsoft.com/dotnet/sdk:9.0 AS build
 
 WORKDIR /app
 
 # copy work to /app directory
 COPY . .
+
 RUN dotnet restore
 
 # Build application
@@ -13,3 +15,6 @@ RUN dotnet build --no-restore -c Release
 # Skips build process.
 # Used for trying to integrate with Azure and not debugging c# code.
 CMD ["dotnet", "test", "--no-build", "--logger:trx"]
+
+
+FROM mrc.microsoft.com/dotnet/aspnet:9.0
