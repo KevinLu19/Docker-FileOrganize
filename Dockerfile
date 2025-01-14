@@ -18,7 +18,5 @@ WORKDIR /app
 
 COPY --from=build-env /app/publish .
 
-# Exposing port 80 (http)
-EXPOSE 80
 
 ENTRYPOINT ["dotnet", "FileOrganizer.dll"]
