@@ -18,5 +18,6 @@ WORKDIR /app
 
 COPY --from=build-env /app/publish .
 
+EXPOSE 80
 
 ENTRYPOINT ["dotnet", "FileOrganizer.dll"]

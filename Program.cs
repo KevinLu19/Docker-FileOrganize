@@ -7,6 +7,14 @@ public class Program
 {
     public static void Main(string[] args)
     {
+        // Asp.net
+        var builder = WebApplication.CreateBuilder(args);
+        var app = builder.Build();
+
+        app.MapGet("/", () => "Hello World!");
+
+        app.Run();
+
         FileOrganizers file_obj = new FileOrganizers();
         // Currently set to get all files in current directory in the docker container.
         file_obj.GetAllFiles();
